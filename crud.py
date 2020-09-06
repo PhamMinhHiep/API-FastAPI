@@ -17,19 +17,7 @@ def get_user_by_username(db: Session, username: str):
 		logging.exception('this is an exception')
 	return result
 
-'''
 
-# create user to store in mysql DB
-def create_user(db: Session, user: schemas.UserCreate):
-    fake_hashed_password = user.password + "notreallyhashed"
-    db_user = models.UserInfo(username=user.username, password=fake_hashed_password, fullname=user.fullname)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    db.close()
-    return db_user
-
-'''
 # create user using hashing
 def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
@@ -50,9 +38,7 @@ def check_username_password(db: Session, user: schemas.UserAuthenticate):
     return bcrypt.checkpw(user.password.encode('utf-8'), db_user_info.password.encode('utf-8'))
     
     
-	
-	
-    
+	 
 
 def create_access_token(*, data: dict, expires_delta: datetime = None):
     secret_key = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
